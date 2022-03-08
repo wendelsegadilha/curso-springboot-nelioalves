@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import xyz.wendelsegadilha.cursonelioalves.domain.Categoria;
@@ -37,13 +40,18 @@ public class CategoriaService {
 	public void delete(Integer id) {
 		find(id);
 		try {
-			repo.deleteById(id);			
-		}catch (DataIntegrityViolationException e) {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
 		}
 	}
 
 	public List<Categoria> findAll() {
 		return repo.findAll();
+	}
+
+	public Page<Categoria> findPage(Integer page, Integer size, String direction, String order) {
+		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), order);
+		return repo.findAll(pageRequest);
 	}
 }
