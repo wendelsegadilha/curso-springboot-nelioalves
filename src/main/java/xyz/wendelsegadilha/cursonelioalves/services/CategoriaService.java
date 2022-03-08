@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import xyz.wendelsegadilha.cursonelioalves.domain.Categoria;
+import xyz.wendelsegadilha.cursonelioalves.dto.CategoriaDTO;
 import xyz.wendelsegadilha.cursonelioalves.repositories.CategoriaRepository;
 import xyz.wendelsegadilha.cursonelioalves.services.exceptions.DataIntegrityException;
 import xyz.wendelsegadilha.cursonelioalves.services.exceptions.ObjectNotFoundException;
@@ -53,5 +54,9 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer size, String direction, String order) {
 		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), order);
 		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 }
